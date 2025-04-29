@@ -1,26 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'wouter';
 
 function Navbar() {
-  const [isNavbarShowing, setNavbarShowing] = useState(false);
-
-  useEffect(() => {
-    const syncNavbarState = () => {
-      setNavbarShowing(window.innerWidth >= 992);
-    };
-
-    syncNavbarState();
-    window.addEventListener('resize', syncNavbarState);
-    return () => window.removeEventListener('resize', syncNavbarState);
-  }, []);
+  const [isNavbarShowing, setIsNavbarShowing] = useState(false);
+  // returns the current URL
+  const [location] = useLocation();
 
   const toggleNavbar = () => {
-    setNavbarShowing(!isNavbarShowing);
+    setIsNavbarShowing(!isNavbarShowing);
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-light bg-primary">
       <div className="container">
-        <a className="navbar-brand" href="#">Hungry Panda</a>
+        <Link href="/" className="navbar-brand">Hungry Panda</Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -31,19 +24,19 @@ function Navbar() {
         <div className={`collapse navbar-collapse ${isNavbarShowing ? "show" : ""}`} id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">Home</a>
+              <Link href="/" className={`nav-link ${location === '/' ? 'active' : ''}`}>
+                Home
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">Menu</a>
+              <Link href="/products" className={`nav-link ${location === '/products' ? 'active' : ''}`}>
+                All Menu
+              </Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">About</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Contact</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Login/Register</a>
+              <Link href="/register" className={`nav-link ${location === '/register' ? 'active' : ''}`}>
+                Register
+              </Link>
             </li>
           </ul>
         </div>
