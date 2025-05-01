@@ -6,11 +6,20 @@ import { useLocation } from 'wouter';
 
 
 function RegisterPage() {
+  const validationSchema = Yup.object({
+    User_name: Yup.string().required('Name is required'),
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .required('Confirm Password is required'),
+
+  });
 
   const initialValues = {
-    name: '',
+    User_name: '',
     email: '',
-    phone: '', 
+    phone: '',
     password: '',
     confirmPassword: ''
   };
@@ -20,7 +29,7 @@ function RegisterPage() {
 
   const handleSubmit = async (values, formikHelpers) => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/register`, values);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/users/register`, values);
       console.log('Registration successful:', response.data);
       setLocation("/");
 
@@ -32,15 +41,7 @@ function RegisterPage() {
     }
   };
 
-  const validationSchema = Yup.object({
-    name: Yup.string().required('Name is required'),
-    email: Yup.string().email('Invalid email address').required('Email is required'),
-    password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref('password'), null], 'Passwords must match')
-      .required('Confirm Password is required'),
 
-  });
 
   return (
     <div className="container mt-5">
@@ -54,14 +55,14 @@ function RegisterPage() {
         {(formik) => (
           <Form>
             <div className="mb-3">
-              {formik.errors.name && formik.touched.name ? <div className="text-danger">{formik.errors.name}</div> : null}
-              <label htmlFor="name" className="form-label">Name</label>
+              {formik.errors.User_name && formik.touched.User_name ? <div className="text-danger">{formik.errors.User_name}</div> : null}
+              <label htmlFor="User_name" className="form-label">Name</label>
               <Field
                 type="text"
                 className="form-control"
-                id="name"
-                name="name"
-                value={formik.values.name}
+                id="User_name"  
+                name="User_name"
+              // value={formik.values.name}
               />
             </div>
 
@@ -73,7 +74,7 @@ function RegisterPage() {
                 className="form-control"
                 id="email"
                 name="email"
-                value={formik.values.email}
+              // value={formik.values.email}
               />
             </div>
 
@@ -86,7 +87,7 @@ function RegisterPage() {
                 className="form-control"
                 id="phone"
                 name="phone"
-                value={formik.values.phone}
+              // value={formik.values.phone}
               />
             </div>
 
@@ -98,7 +99,7 @@ function RegisterPage() {
                 className="form-control"
                 id="password"
                 name="password"
-                value={formik.values.password}
+              // value={formik.values.password}
               />
             </div>
 
@@ -110,7 +111,7 @@ function RegisterPage() {
                 className="form-control"
                 id="confirmPassword"
                 name="confirmPassword"
-                value={formik.values.confirmPassword}
+              // value={formik.values.confirmPassword}
               />
             </div>
 
