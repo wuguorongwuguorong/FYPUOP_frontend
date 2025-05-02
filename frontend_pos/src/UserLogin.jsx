@@ -2,6 +2,8 @@ import React from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useJwt } from './UserStore';
+import { useFlashMessage } from './FlashMessageStore';
 import { useLocation } from 'wouter';
 
 // Validation Schema using Yup
@@ -17,7 +19,8 @@ const validationSchema = Yup.object({
 
 function UserLogin() {
 
-
+    const { setJwt } = useJwt();
+    const { showMessage } = useFlashMessage(); // Hook for flash messages
     const [, setLocation] = useLocation(); // Hook for navigation
 
     const initialValues = {
