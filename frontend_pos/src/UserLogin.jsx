@@ -17,8 +17,7 @@ const validationSchema = Yup.object({
 
 function UserLogin() {
 
-    const { setJwt } = useJwt();
-    const { showMessage } = useFlashMessage(); // Hook for flash messages
+
     const [, setLocation] = useLocation(); // Hook for navigation
 
     const initialValues = {

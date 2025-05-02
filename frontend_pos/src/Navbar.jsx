@@ -34,7 +34,7 @@ function Navbar() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link href="/products" className={`nav-link ${location === '/login' ? 'active' : ''}`}>
+              <Link href="/login" className={`nav-link ${location === '/login' ? 'active' : ''}`}>
                 Members Login
               </Link>
             </li>
