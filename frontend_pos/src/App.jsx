@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import HomePage from './HomePage';
 import ProductPage from './ProductPage';
 import RegisterPage from './RegisterPage';
+import Login from './UserLogin';
 import { Route, Switch } from 'wouter';
 import './styles.css';
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" component={HomePage} />
         <Route path="/products" component={ProductPage} />
         <Route path="/register" component={RegisterPage} />
+        <Route path="/login" component={Login} />
       </Switch>
 
   
