@@ -28,12 +28,10 @@ export default function Profile() {
 
     }, []);
 
-    const validationSchema = Yup.object({
-        name: Yup.string().required('Required'),
-        email: Yup.string().email('Invalid email address').required('Required'),
-        salutation: Yup.string(),
-        marketingPreferences: Yup.array().of(Yup.string()),
-        country: Yup.string(),
+     const validationSchema = Yup.object({
+       User_name: Yup.string().required('Name is required'),
+       email: Yup.string().email('Invalid email address').required('Email is required'),
+       password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
     });
 
     const handleSubmit = async (values, actions) => {
