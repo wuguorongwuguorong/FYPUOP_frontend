@@ -61,6 +61,23 @@ export default function Profile() {
         }
     };
 
+    const handleDeleteAccount = async () => {
+        try {
+            const token = getJwt();
+            await axios.delete(import.meta.env.VITE_API_URL + "/api/users/me", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            showMessage("Account has been deleted", "danger");
+            
+        } catch (error) {
+            console.error('Error Deleting profile:', error);
+        }finally{
+            setLocation("/register");
+        }
+    }
+
     return (
         <div className="container mt-5">
             <h2>Edit Profile</h2>
@@ -107,7 +124,9 @@ export default function Profile() {
                     );
                 }}
             </Formik>
-
+            <button className="btn btn-danger" onClick={handleDeleteAccount}>
+                Delete Account
+            </button>
         </div>
     )
 }
