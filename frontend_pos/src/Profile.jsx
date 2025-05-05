@@ -31,6 +31,7 @@ export default function Profile() {
      const validationSchema = Yup.object({
        User_name: Yup.string().required('Name is required'),
        email: Yup.string().email('Invalid email address').required('Email is required'),
+       phone : Yup.string(),
        password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
     });
 
