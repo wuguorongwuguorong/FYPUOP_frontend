@@ -11,7 +11,7 @@ function ProductPage() {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
-        console.log('Fetched products:', response.data); 
+        console.log('Fetched products:', response.data);
         setProducts(response.data);
 
       } catch (error) {
@@ -25,19 +25,19 @@ function ProductPage() {
     <div className="container my-5">
       <h1 className="text-center mb-4 "> All Menu</h1>
       <div className="row">
-
+        
         {
           products.map((m) => (
             <div className="col-md-3 mb-4" key={m.menu_item_id}>
               <ProductCard
-                menu_item_id={m.id}
-                menu_item_name={m.name}
+                menu_item_id={m.menu_item_id}
+                menu_item_name={m.menu_item_name}
                 price={m.price}
-                image_url={m.image_url}
-              
-                // onAddToCart={() => {
-                //   handleAddToCart(m);
-                // }}
+                image_url={`${import.meta.env.VITE_API_URL}${m.image_url}`} 
+
+                onAddToCart={() => {
+                  handleAddToCart(m);
+                }}
               />
             </div>
           ))
