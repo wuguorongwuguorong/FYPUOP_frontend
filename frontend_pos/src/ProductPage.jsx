@@ -13,20 +13,23 @@ function ProductPage() {
   const { addToCart } = useCart();
   const [, setLocation] = useLocation();
 
+
   const handleAddToCart = (m) => {
+    // Add to the cart
     addToCart({
-      menu_id: m.menu_item_id,
+      menu_item_id: m.menu_item_id,
       productName: m.menu_item_name,
       imageUrl: `${import.meta.env.VITE_API_URL}${m.image_url}`,
       price: m.price
     });
-    showMessage("Product added to cart", "success");
-    setLocation("/cart");
 
-    setTimeout(() => {
-      setLocation("/products"); // Replace "/products" with the actual path to ProductsPage
-    }, 2000); // Wait 2 seconds before redirecting
+    // Show a success message
+    showMessage("Product added to cart", "success");
+
+    // Redirect to the cart page
+    setLocation("/cart");
   };
+
 
   useEffect(() => {
     const fetchProducts = async () => {
