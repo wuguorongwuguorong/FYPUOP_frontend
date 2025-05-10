@@ -1,33 +1,68 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useCart } from "./CartStore";
+import { useJwt } from "./UserStore";
+import axios from 'axios';
 
-const ShoppingCart = ({ cartItems }) => {
-  return (
-    <div>
-      <h2>Your Shopping Cart</h2>
-      <div>
-        {cartItems.length === 0 ? (
-          <p>Your cart is empty</p>
-        ) : (
-          <ul>
-            {cartItems.map((item) => (
-              <li key={item.menu_item_id}>
-                <div>
-                  <img
-                    src={item.imageUrl ? `${import.meta.env.VITE_API_URL}${item.image_url}` : '/default-image.jpg'}
-                    alt={item.productName}
-                    className="cart-item-image"
-                  />
-                  <h4>{item.productName}</h4>
-                  <p>Price: SGD {item.price}</p>
-                  <p>Quantity: {item.quantity}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </div>
-  );
+const ShoppingCart = () => {
+    const { fetchCart, isLoading, cart, modifyQuantity, removeFromCart } = useCart();
+
+    useEffect(() => {
+        fetchCart(); // Fetch the cart data when the component mounts
+    }, []);
+
+    const { getJwt } = useJwt();
+
+    return (
+        <div className="container mt-4">
+            <h2>Shopping Cart</h2>
+            {isLoading ? (
+                <p>Loading cart...</p>
+            ) : cart.length === 0 ? (
+                <p>Your cart is empty.</p>
+            ) : (
+                <>
+                    <ul className="list-group">
+                        {cart.map((item) => (
+                            <li
+                                key={item.menu_item_id}
+                                className="list-group-item d-flex justify-content-between align-items-center"
+                            >
+                                <div>
+                                    <h5>{item.productName}</h5>
+                                    <img src={item.imageUrl} alt={item.productName} />
+                                    <div className="d-flex align-items-center mt-2">
+                                        <input
+                                            type="button"
+                                            className="btn btn-sm btn-secondary me-2"
+                                            value="-"
+                                            onClick={() => modifyQuantity(item.menu_item_id, item.quantity - 1)}  // Modify item quantity
+                                            disabled={isLoading}
+                                        />
+                                        <p className="mb-0">Quantity: {item.quantity}</p>
+                                        <input
+                                            type="button"
+                                            className="btn btn-sm btn-secondary ms-2"
+                                            value="+"
+                                            onClick={() => modifyQuantity(item.menu_item_id, item.quantity + 1)}  // Modify item quantity
+                                            disabled={isLoading}
+                                        />
+                                        <button
+                                            className="btn btn-sm btn-danger ms-2"
+                                            onClick={() => removeFromCart(item.menu_item_id)}  // Remove item from cart
+                                            disabled={isLoading}
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                                <span>${(item.price * item.quantity).toFixed(2)}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </>
+            )}
+        </div>
+    );
 };
 
 export default ShoppingCart;
