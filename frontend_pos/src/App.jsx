@@ -6,6 +6,7 @@ import ProductPage from './ProductPage';
 import RegisterPage from './RegisterPage';
 import Login from './UserLogin';
 import Profile from './Profile';
+import ShoppingCart from './ShoppingCart';
 import { Route, Switch } from 'wouter';
 import './styles.css';
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/register" component={RegisterPage} />
         <Route path="/login" component={Login} />
         <Route path='/profile' component={Profile}/>
+        <Route path="/cart" component={ShoppingCart} />
       </Switch>
 
   
