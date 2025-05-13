@@ -14,13 +14,14 @@ function ProductPage() {
   const [, setLocation] = useLocation();
 
 
-  const handleAddToCart = (m) => {
+  const handleAddToCart = (product) => {
     // Add to the cart
     addToCart({
-      menu_item_id: m.menu_item_id,
-      productName: m.menu_item_name,
-      imageUrl: `${import.meta.env.VITE_API_URL}${m.image_url}`,
-      price: m.price
+      order_item_id: Math.floor(Math.random()* 9999 + 1),
+      menu_item_id: product.id,
+      menu_item_name: product.name,
+      image_url: `${import.meta.env.VITE_API_URL}${product.imageUrl}`,
+      menu_item_price: product.price
     });
 
     // Show a success message
@@ -51,16 +52,16 @@ function ProductPage() {
       <div className="row">
 
         {
-          products.map((m) => (
-            <div className="col-md-3 mb-4" key={m.menu_item_id}>
+          products.map((p) => (
+            <div className="col-md-3 mb-4" key={p.order_item_id}>
               <ProductCard
-                menu_item_id={m.menu_item_id}
-                menu_item_name={m.menu_item_name}
-                price={m.price}
-                image_url={`${import.meta.env.VITE_API_URL}${m.image_url}`}
+                menu_item_id={p.menu_item_id}
+                productName={p.menu_item_name}
+                price={p.price}
+                imageUrl={`${import.meta.env.VITE_API_URL}${p.imageUrl}`}
 
                 onAddToCart={() => {
-                  handleAddToCart(m);
+                  handleAddToCart(p);
                 }}
               />
             </div>
