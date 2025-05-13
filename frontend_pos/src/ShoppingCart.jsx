@@ -2,8 +2,13 @@ import React from 'react';
 import { useCart } from './CartStore';
 
 const ShoppingCart = () => {
-    const { cart, getCartTotal, modifyQuantity } = useCart();
+    const { cart, fetchCart, getCartTotal, modifyQuantity, removeFromCart } = useCart();
 
+     // Fetch the cart data when the component mounts
+     useEffect(() => {
+        fetchCart();
+    }, []);
+    
     return (
         <div className="container mt-4">
             <h2>Shopping Cart</h2>
