@@ -32,13 +32,16 @@ export const useCart = () => {
 
                 // existing item
                 const modifiedCart = currentCart.setIn([existingItemIndex, 'quantity'], newQuantity);
+                updateCart(modifiedCart);
                 return modifiedCart;
             } else {
                 // new item
-                return currentCart.concat({
+                const modifiedCart = currentCart.concat({
                     ...product,
                     quantity: 1
                 })
+                updateCart(modifiedCart);
+                return modifiedCart;
             }
         })
     }
@@ -46,22 +49,24 @@ export const useCart = () => {
     const modifyQuantity = (menu_item_id, quantity) => {
         setCart((currentCart) => {
             const existingItemIndex = currentCart.findIndex(item => item.menu_item_id === menu_item_id);
-            if (existingItemIndex !== -1) {
-
-                // check if the quantity will be reduced to 0 or less, if so remove the item
-                if (quantity < 0) {
-                    return currentCart.filter(item => item.menu_item_id !== menu_item_id);
-                } else {
-                    return currentCart.setIn([existingItemIndex, 'quantity'], quantity);
-                }
-
+            if (quantity > 0) {
+                // .setIn will return a modified copy of the original array
+                const modifiedCart = currentCart.setIn([existingItemIndex, "quantity"], quantity);
+                updateCart(modifiedCart);
+                return modifiedCart;
+            } else {
+                const modifiedCart = currentCart.filter(cartItem => cartItem.menu_item_id != menu_item_id);
+                updateCart(modifiedCart);
+                return modifiedCart;
             }
         });
     }
 
     const removeFromCart = (menu_item_id) => {
         setCart((currentCart) => {
-            return currentCart.filter(item => item.menu_item_id !== menu_item_id);
+            const modifiedCart = currentCart.filter(cartItem => cartItem.menu_item_id != menu_item_id);
+            updateCart(modifiedCart)
+            return modifiedCart;
         });
     }
 
@@ -85,12 +90,35 @@ export const useCart = () => {
         }
     };
 
+    const updateCart = async (updatedCart) => {
+        const jwt = getJwt();
+        setIsLoading(true);
+        try {
+            const updatedCartItems = updatedCart.map(item => ({
+                menu_item_id: item.menu_item_id,
+                quantity: item.quantity
+            })
+            );
+            console.log("Updating cart items:", updatedCartItems);  
+            await axios.put(
+                `${import.meta.env.VITE_API_URL}/api/cart`, 
+                { cartItems: updatedCartItems },
+                { headers: { Authorization: 'Bearer ' + jwt } }
+            );
+        } catch (error) {
+            console.error("Error updating cart:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     return {
         cart,
         getCartTotal,
         addToCart,
         modifyQuantity,
         removeFromCart,
-        fetchCart
+        fetchCart,
+        isLoading
     };
 };

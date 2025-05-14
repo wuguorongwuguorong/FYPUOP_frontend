@@ -5,7 +5,7 @@ export default function ProductCard(props) {
     <>
       <div className="card h-100 shadow-sm">
         <img
-          src={`${import.meta.env.VITE_API_URL}${props.imageUrl}`}
+          src={`${import.meta.env.VITE_API_URL}${props.image_url}`}
           className="card-img-top"
           alt={props.productName}
         />

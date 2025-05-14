@@ -18,10 +18,10 @@ function ProductPage() {
     // Add to the cart
     addToCart({
       order_item_id: Math.floor(Math.random()* 9999 + 1),
-      menu_item_id: product.id,
-      menu_item_name: product.name,
+      menu_item_id: product.menu_item_id,
+      menu_item_name: product.productName,
       image_url: `${import.meta.env.VITE_API_URL}${product.imageUrl}`,
-      menu_item_price: product.price
+      menu_item_price: product.menu_item_price
     });
 
     // Show a success message
@@ -58,7 +58,7 @@ function ProductPage() {
                 menu_item_id={p.menu_item_id}
                 productName={p.menu_item_name}
                 price={p.price}
-                imageUrl={`${import.meta.env.VITE_API_URL}${p.imageUrl}`}
+                imageUrl={`${import.meta.env.VITE_API_URL}${p.image_url}`}
 
                 onAddToCart={() => {
                   handleAddToCart(p);
