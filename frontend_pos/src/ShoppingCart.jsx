@@ -17,7 +17,7 @@ const ShoppingCart = () => {
 
     return (
         <div className="container mt-4">
-            <h2>Shopping Cart</h2>
+            <h2>Ordering Cart</h2>
             {isLoading ? (
                 <p>Loading cart...</p>
             ) : cart.length === 0 ? (

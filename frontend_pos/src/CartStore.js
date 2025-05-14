@@ -28,7 +28,9 @@ export const useCart = () => {
         setCart(currentCart => {
             const existingItemIndex = cart.findIndex(i => i.menu_item_id === product.menu_item_id);
             if (existingItemIndex !== -1) {
-                let newQuantity = cart[existingItemIndex].quantity + 1;
+                // If the item exists, increase the quantity by 1
+                const updatedCart = [...currentCart]; // Create a shallow copy
+                updatedCart[existingItemIndex].quantity += 1;
 
                 // existing item
                 const modifiedCart = currentCart.setIn([existingItemIndex, 'quantity'], newQuantity);
@@ -75,7 +77,7 @@ export const useCart = () => {
         setIsLoading(true);
         try {
             const response = await axios.get(
-                `${import.meta.env.VITE_API_URL}/api/cart`,
+                `${import.meta.env.VITE_API_URL}/api/cart/cart`,
                 {
                     headers: {
                         Authorization: `Bearer ${jwt}`,
@@ -99,9 +101,9 @@ export const useCart = () => {
                 quantity: item.quantity
             })
             );
-            console.log("Updating cart items:", updatedCartItems);  
+            console.log("Updating cart items:", updatedCartItems);
             await axios.put(
-                `${import.meta.env.VITE_API_URL}/api/cart`, 
+                `${import.meta.env.VITE_API_URL}/api/cart/editcart`,
                 { cartItems: updatedCartItems },
                 { headers: { Authorization: 'Bearer ' + jwt } }
             );
