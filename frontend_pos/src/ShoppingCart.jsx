@@ -43,7 +43,7 @@ const ShoppingCart = () => {
                                             type="button"
                                             className="btn btn-sm btn-secondary ms-2"
                                             value="+"
-                                            onClick={() => addToCart(item)}
+                                            onClick={() => modifyQuantity(item.menu_item_id, item.quantity + 1)}
                                             disabled={isLoading}
                                         />
                                         <button

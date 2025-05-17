@@ -15,7 +15,7 @@ function HomePage() {
             </header>
 
             <main className="container my-5">
-                <h2 className="text-center mb-4">Featured Products</h2>
+                <h2 className="text-center mb-4">Featured Menu</h2>
                 <div className="row">
                     <div className="col-md-3 mb-4">
                         <ProductCard
