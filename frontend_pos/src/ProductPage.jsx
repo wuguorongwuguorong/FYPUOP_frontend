@@ -20,7 +20,7 @@ function ProductPage() {
       order_item_id: Math.floor(Math.random()* 9999 + 1),
       menu_item_id: product.menu_item_id,
       menu_item_name: product.productName,
-      image_url: product.imageUrl,
+      image_url:product.image_url,
       menu_item_price: product.price
     });
 
@@ -52,16 +52,16 @@ function ProductPage() {
       <div className="row">
 
         {
-          products.map((p) => (
-            <div className="col-md-3 mb-4" key={p.order_item_id}>
+          products.map((product) => (
+            <div className="col-md-3 mb-4" key={product.order_item_id}>
               <ProductCard
-                menu_item_id={p.menu_item_id}
-                productName={p.menu_item_name}
-                menu_item_price={p.price}
-                image_url={p.imageUrl}
+                menu_item_id={product.menu_item_id}
+                productName={product.menu_item_name}
+                price={product.price}
+                image_url={product.image_url} 
 
                 onAddToCart={() => {
-                  handleAddToCart(p);
+                  handleAddToCart(product);
                 }}
               />
             </div>

@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default {
   server: {
     allowedHosts: [
-      '5173-wuguorongwu-fypuopfront-5023cx8zd14.ws-us118.gitpod.io'
+      '5173-wuguorongwu-fypuopfront-5023cx8zd14.ws-us120.gitpod.io'
     ],
   },
 };

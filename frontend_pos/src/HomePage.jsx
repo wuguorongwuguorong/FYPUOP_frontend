@@ -1,9 +1,29 @@
-import React from 'react';
-import ProductCard from './ProductCard';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import ProductCard from './ProductCard'
+import { useCart } from './CartStore';
+import { useLocation } from 'wouter';
+import { useFlashMessage } from './FlashMessageStore';
 
 
 function HomePage() {
+  const [products, setProducts] = useState([])
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
+        console.log('Fetched products:', response.data);
+        setProducts(response.data);
+
+      } catch (error) {
+        console.log('Error Fetching products: ', error);
+      }
+    }
+    fetchProducts();
+  }, []);
+
+  
     return (
         <>
             <header className="bg-primary text-white text-center py-5">
@@ -17,39 +37,24 @@ function HomePage() {
             <main className="container my-5">
                 <h2 className="text-center mb-4">Featured Menu</h2>
                 <div className="row">
-                    <div className="col-md-3 mb-4">
-                        <ProductCard
-                            image_url="https://picsum.photos/id/20/300/200"
-                            menu_item_name="Fish & Chip"
-                            menu_item_price="13.99"
-                        />
-                    </div>
+                    {
+                        products.map((p) => (
+                            <div className="col-md-3 mb-4" key={p.order_item_id}>
+                                <ProductCard
+                                    menu_item_id={p.menu_item_id}
+                                    productName={p.menu_item_name}
+                                    price={p.price}
+                                    imageUrl={p.imageUrl}
 
-                    <div className="col-md-3 mb-4">
-                        <ProductCard
-                            image_url="https://picsum.photos/id/1/300/200"
-                            menu_item_name="Black Pepper Chicken Chop"
-                            menu_item_price="11.99"
-                        />
-                    </div>
-
-                    <div className="col-md-3 mb-4">
-                        <ProductCard
-                            image_url="https://picsum.photos/id/26/300/200"
-                            menu_item_name="Rip Eye Steak"
-                            menu_item_price="18.99"
-                        />
-                    </div>
-
-                    <div className="col-md-3 mb-4">
-                        <ProductCard
-                            image_url="https://picsum.photos/id/96/300/200"
-                            menu_item_name="Lamb Chop"
-                            menu_item_price="12.99"
-                        />
-                    </div>
+                                    onAddToCart={() => {
+                                        handleAddToCart(p);
+                                    }}
+                                />
+                            </div>
+                        ))
+                    }
                 </div>
-            </main>
+            </main >
         </>
     )
 }

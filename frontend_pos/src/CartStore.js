@@ -25,11 +25,11 @@ export const useCart = () => {
     };
 
     const addToCart = (product) => {
-        setCart(currentCart => {
+        setCart(currentCart  => {
             const existingItemIndex = cart.findIndex(i => i.menu_item_id === product.menu_item_id);
             if (existingItemIndex !== -1) {
                 // If the item exists, increase the quantity by 1
-                // const updatedCart = [...currentCart]; // Create a shallow copy
+                 const updatedCart = [...currentCart]; // Create a shallow copy
                 // updatedCart[existingItemIndex].quantity += 1;
 
                 // existing item

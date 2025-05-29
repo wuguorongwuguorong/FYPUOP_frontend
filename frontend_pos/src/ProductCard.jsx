@@ -11,7 +11,7 @@ export default function ProductCard(props) {
         />
         <div className="card-body">
           <h5 className="card-title">{props.productName}</h5>
-          <p className="card-text">${(props.menu_item_price)}</p>
+          <p className="card-text">${(props.price)}</p>
           <a href="#" className="btn btn-primary" onClick={() => {
             console.log("added to cart");
             props.onAddToCart();
