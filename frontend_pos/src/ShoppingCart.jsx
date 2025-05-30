@@ -28,7 +28,7 @@ const ShoppingCart = () => {
                         {cart.map((item) => (
                             <li key={item.order_item_id} className="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
-                                    <img src={item.imageUrl} alt={item.productName} className="cart-image" />
+                                    <img src={item.image_url} alt={item.productName} className="cart-image" />
                                     <h5>{item.productName}</h5>
                                     <div className="d-flex align-items-center mt-2">
                                         <input
