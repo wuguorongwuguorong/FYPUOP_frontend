@@ -98,7 +98,8 @@ export const useCart = () => {
         try {
             const updatedCartItems = updatedCart.map(item => ({
                 menu_item_id: item.menu_item_id,
-                quantity: item.quantity
+                quantity: item.quantity,
+                image_url : item.image_url
             })
             );
             console.log("Updating cart items:", updatedCartItems);
