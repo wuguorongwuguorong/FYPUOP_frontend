@@ -20,9 +20,14 @@ export const useCart = () => {
     const { getJwt } = useJwt();
 
     // Function to calculate the total price of items in the cart
-    const getCartTotal = () => {
-        return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
-    };
+  const getCartTotal = () => {
+  return cart.reduce((total, item) => {
+    const price = Number(item.price);
+    const quantity = Number(item.quantity);
+    return total + (isNaN(price) || isNaN(quantity) ? 0 : price * quantity);
+  }, 0).toFixed(2);
+};
+
 
     const addToCart = (product) => {
         setCart(currentCart  => {
@@ -48,6 +53,36 @@ export const useCart = () => {
         })
     }
 
+//     const addToCart = (product) => {
+//     setCart(currentCart => {
+//         const existingItemIndex = currentCart.findIndex(i => i.menu_item_id === product.menu_item_id);
+        
+//         if (existingItemIndex !== -1) {
+//             // Item already exists, increase quantity
+//             const updatedCart = [...currentCart];
+//             const existingItem = updatedCart[existingItemIndex];
+//             updatedCart[existingItemIndex] = {
+//                 ...existingItem,
+//                 quantity: (existingItem.quantity || 0) + 1,
+//             };
+//             updateCart(updatedCart);
+//             return updatedCart;
+//         } else {
+//             // New item with quantity 1
+//             const newCart = [
+//                 ...currentCart,
+//                 {
+//                     ...product,
+//                     quantity: 1,
+//                 }
+//             ];
+//             updateCart(newCart);
+//             return newCart;
+//         }
+//     });
+// };
+
+
     const modifyQuantity = (menu_item_id, quantity) => {
         setCart((currentCart) => {
             const existingItemIndex = currentCart.findIndex(item => item.menu_item_id === menu_item_id);
@@ -72,25 +107,64 @@ export const useCart = () => {
         });
     }
 
+    // const fetchCart = async () => {
+    //     const jwt = getJwt();
+    //     setIsLoading(true);
+    //     try {
+    //         const response = await axios.get(
+    //             `${import.meta.env.VITE_API_URL}/api/cart/cart`,
+    //             {
+    //                 headers: {
+    //                     Authorization: `Bearer ${jwt}`,
+    //                 },
+    //             }
+    //         );
+    //         setCart(response.data);
+    //     } catch (error) {
+    //         console.error("Error fetching cart:", error);
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // };
+
+
     const fetchCart = async () => {
-        const jwt = getJwt();
-        setIsLoading(true);
-        try {
-            const response = await axios.get(
-                `${import.meta.env.VITE_API_URL}/api/cart/cart`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${jwt}`,
-                    },
-                }
-            );
-            setCart(response.data);
-        } catch (error) {
-            console.error("Error fetching cart:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+  const jwt = getJwt();
+  setIsLoading(true);
+  try {
+    // Ambil data cart (hanya menu_item_id dan quantity)
+    const cartRes = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/cart/cart`,
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+    );
+
+    // Ambil data produk lengkap
+    const productRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
+
+    // Gabungkan data cart + produk berdasarkan menu_item_id
+    const cartItems = cartRes.data.map((item) => {
+      const product = productRes.data.find(p => p.menu_item_id === item.menu_item_id);
+      return {
+        ...item,
+        price: product?.price || 0,
+        productName: product?.menu_item_name || "Unknown",
+        image_url: product?.image_url || "placeholder.png"
+      };
+    });
+
+    setCart(cartItems);
+  } catch (error) {
+    console.error("Error fetching cart with product details:", error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
 
     const updateCart = async (updatedCart) => {
         const jwt = getJwt();

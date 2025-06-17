@@ -11,10 +11,10 @@ const TransactionHistory = () => {
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-               const response = await axios.get(import.meta.env.VITE_API_URL + "/api/users/history", {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                const response = await axios.get(import.meta.env.VITE_API_URL + "/api/users/history", {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 });
                 setTransactions(response.data);
             } catch (err) {
