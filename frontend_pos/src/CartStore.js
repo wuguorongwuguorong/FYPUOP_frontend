@@ -132,7 +132,6 @@ export const useCart = () => {
   const jwt = getJwt();
   setIsLoading(true);
   try {
-    // Ambil data cart (hanya menu_item_id dan quantity)
     const cartRes = await axios.get(
       `${import.meta.env.VITE_API_URL}/api/cart/cart`,
       {
@@ -142,10 +141,8 @@ export const useCart = () => {
       }
     );
 
-    // Ambil data produk lengkap
     const productRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
 
-    // Gabungkan data cart + produk berdasarkan menu_item_id
     const cartItems = cartRes.data.map((item) => {
       const product = productRes.data.find(p => p.menu_item_id === item.menu_item_id);
       return {
