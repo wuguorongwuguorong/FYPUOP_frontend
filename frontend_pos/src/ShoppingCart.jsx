@@ -32,6 +32,7 @@ const ShoppingCart = () => {
       body: JSON.stringify({
         cart: cart.map(item => ({
           menu_item_id: item.menu_item_id,
+          menu_item_name: item.menu_item_name,
           quantity: item.quantity,
           price: item.price
         })),
@@ -78,7 +79,7 @@ const ShoppingCart = () => {
 };
 
     const subtotal = cart.reduce((sum, item) =>
-        sum + (Number(item.menu_item_price || 0) * Number(item.quantity || 1)), 0
+        sum + (Number(item.price || 0) * Number(item.quantity || 1)), 0
     );
     const taxAmount = subtotal * TAX_RATE;
     const total = subtotal + taxAmount;
@@ -101,12 +102,12 @@ const ShoppingCart = () => {
                                 <div>
                                     <img
                                         src={`${import.meta.env.VITE_API_URL}/${item.image_url}`}
-                                        alt={item.menu_item_name || "Product"}
+                                        alt={item.productName || "Product"}
                                         className="cart-image"
                                         style={{ width: "304px", height: "200px", objectFit: "cover", borderRadius: "8px" }}
                                         onError={(e) => { e.target.src = "/placeholder.png"; }}
                                     />
-                                    <h5>{item.menu_item_name || "No name"}</h5>
+                                    <h5>{item.productName || "No name"}</h5>
                                     <div className="d-flex align-items-center mt-2">
                                         <button
                                             type="button"
@@ -142,7 +143,7 @@ const ShoppingCart = () => {
                                     </div>
                                 </div>
                                 <span>
-                                    ${((Number(item.menu_item_price || 0) * Number(item.quantity || 1)).toFixed(2))}
+                                    ${((Number(item.price || 0) * Number(item.quantity || 1)).toFixed(2))}
                                 </span>
                             </li>
                         ))}
