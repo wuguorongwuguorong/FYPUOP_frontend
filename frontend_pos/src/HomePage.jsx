@@ -1,4 +1,4 @@
-import React , { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProductCard from './ProductCard';
 import { useCart } from './CartStore';
@@ -15,7 +15,47 @@ function HomePage() {
   const [customerName, setCustomerName] = useState('');
   const [comment, setComment] = useState('');
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [comments, setComments] = useState([]);
 
+  // Fetch data (products, popular products, and comments)
+  const fetchData = async () => {
+    try {
+      // Fetching products
+      const productsResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
+      if (Array.isArray(productsResponse.data)) {
+        setProducts(productsResponse.data);
+      } else {
+        console.error('Received products data is not an array');
+        setProducts([]);
+      }
+
+      // Fetching popular products
+      const popularResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/menu/popular`);
+      if (Array.isArray(popularResponse.data)) {
+        setPopularProducts(popularResponse.data);
+      } else {
+        console.error('Received popular products data is not an array');
+        setPopularProducts([]);
+      }
+
+      // Fetching comments
+      const commentsResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/comments`);
+      if (Array.isArray(commentsResponse.data)) {
+        setComments(commentsResponse.data);
+      } else {
+        console.error('Received comments data is not an array');
+        setComments([]);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Handle Add to Cart
   const handleAddToCart = (product) => {
     addToCart({
       order_item_id: Math.floor(Math.random() * 9999 + 1),
@@ -30,6 +70,7 @@ function HomePage() {
     setLocation("/cart");
   };
 
+  // Handle comment submission
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -39,39 +80,12 @@ function HomePage() {
       });
       setSubmitStatus('success');
       setComment('');
+      fetchData(); // Fetch updated comments after successful submit
     } catch (error) {
       console.error('Error submitting comment:', error);
       setSubmitStatus('error');
     }
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-     try {
-        const productsResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
-        // Ensure the response data is an array before setting the state
-        if (Array.isArray(productsResponse.data)) {
-          setProducts(productsResponse.data);
-        } else {
-          console.error('Received products data is not an array');
-          setProducts([]); // Default to an empty array in case the response is invalid
-        }
-
-        const popularResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/menu/popular`);
-        // Ensure the response data is an array before setting the state
-        if (Array.isArray(popularResponse.data)) {
-          setPopularProducts(popularResponse.data);
-        } else {
-          console.error('Received popular products data is not an array');
-          setPopularProducts([]); // Default to an empty array in case the response is invalid
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   return (
     <>
@@ -79,7 +93,6 @@ function HomePage() {
         <div className="container">
           <h1 className="display-4">Welcome to Hungry Panda</h1>
           <p className="lead">Discover Authentic Western Cuisine at unbeatable prices!</p>
-         
         </div>
       </header>
 
@@ -155,6 +168,24 @@ function HomePage() {
               <div className="alert alert-danger mt-3">Failed to submit comment.</div>
             )}
           </form>
+        </section>
+
+        {/* Display Comments Section */}
+        <section className="container my-5">
+          <h2 className="text-center mb-4">💬 Customer Comments</h2>
+          <div className="list-group">
+            {comments.length > 0 ? (
+              comments.map((comment) => (
+                <div key={comment.id} className="list-group-item">
+                  <strong>{comment.customer_name}</strong>
+                  <p>{comment.comment}</p>
+                  <small className="text-muted">{new Date(comment.created_at).toLocaleString()}</small>
+                </div>
+              ))
+            ) : (
+              <p>No comments yet.</p>
+            )}
+          </div>
         </section>
       </main>
     </>

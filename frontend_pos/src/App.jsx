@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import ProductCard from './ProductCard';
 import Navbar from './Navbar';
-
 import HomePage from './HomePage';
 //import ProductPage from './ProductPage';
 import RegisterPage from './RegisterPage';

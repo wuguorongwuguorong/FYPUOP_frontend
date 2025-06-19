@@ -13,7 +13,7 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-primary">
       <div className="container">
-        <Link href="/" className="navbar-brand">Hungry Panda</Link>
+        <Link href="/homepage" className="navbar-brand">Hungry Panda</Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -24,13 +24,13 @@ function Navbar() {
         <div className={`collapse navbar-collapse ${isNavbarShowing ? "show" : ""}`} id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link href="/" className={`nav-link ${location === '/' ? 'active' : ''}`}>
+              <Link href="/homepage" className={`nav-link ${location === '/homepage' ? 'active' : ''}`}>
                 Home
               </Link>
             </li>
   
             <li className="nav-item">
-              <Link href="/login" className={`nav-link ${location === '/login' ? 'active' : ''}`}>
+              <Link href="/" className={`nav-link ${location === '/' ? 'active' : ''}`}>
                 Members Login
               </Link>
             </li>
