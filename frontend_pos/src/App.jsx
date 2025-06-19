@@ -17,10 +17,11 @@ function App() {
     <>
       <Navbar />
       <Switch>
-        <Route path="/" component={HomePage} />
+        <Route path="/" component={Login} />
+        <Route path="/homepage" component={HomePage} />
      
         <Route path="/register" component={RegisterPage} />
-        <Route path="/login" component={Login} />
+       
         <Route path='/profile' component={Profile}/>
         <Route path="/cart" component={ShoppingCart} />
       </Switch>

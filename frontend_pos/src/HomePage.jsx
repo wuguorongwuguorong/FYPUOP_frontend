@@ -78,7 +78,7 @@ function HomePage() {
       <header className="bg-primary text-white text-center py-5">
         <div className="container">
           <h1 className="display-4">Welcome to Hungry Panda</h1>
-          <p className="lead">Discover authentic Western Cuisine at unbeatable prices!</p>
+          <p className="lead">Discover Authentic Western Cuisine at unbeatable prices!</p>
          
         </div>
       </header>
