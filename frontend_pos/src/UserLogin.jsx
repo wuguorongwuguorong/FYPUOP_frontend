@@ -37,7 +37,7 @@ function UserLogin() {
             setJwt(response.data.token); // Store the JWT
             actions.setSubmitting(false);
             showMessage('Login successful!', 'success'); // Show success message
-            setLocation('/products'); // Redirect to a dashboard or another page
+            setLocation('/'); // Redirect to a dashboard or another page
         } catch (error) {
             console.error('Login failed:', error);
             actions.setErrors({ submit: error.response.data.message });

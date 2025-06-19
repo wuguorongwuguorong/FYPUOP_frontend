@@ -57,7 +57,7 @@ export default function Profile() {
        
         } finally {
             actions.setSubmitting(false);
-            setLocation("/products");
+            setLocation("/");
         }
     };
 

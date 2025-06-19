@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ProductCard from './ProductCard';
 import Navbar from './Navbar';
 import HomePage from './HomePage';
-import ProductPage from './ProductPage';
+//import ProductPage from './ProductPage';
 import RegisterPage from './RegisterPage';
 import Login from './UserLogin';
 import Profile from './Profile';
@@ -18,7 +18,7 @@ function App() {
       <Navbar />
       <Switch>
         <Route path="/" component={HomePage} />
-        <Route path="/products" component={ProductPage} />
+     
         <Route path="/register" component={RegisterPage} />
         <Route path="/login" component={Login} />
         <Route path='/profile' component={Profile}/>

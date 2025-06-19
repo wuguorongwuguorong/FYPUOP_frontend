@@ -4,6 +4,7 @@ import { useJwt } from "./UserStore";
 import axios from 'axios';
 
 const TransactionHistory = () => {
+    const { token } = useJwt(); // Assuming useJwt provides the token
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -11,10 +12,10 @@ const TransactionHistory = () => {
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const response = await axios.get(import.meta.env.VITE_API_URL + "/api/users/history", {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+               const response = await axios.get(import.meta.env.VITE_API_URL + "/api/users/history", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
                 });
                 setTransactions(response.data);
             } catch (err) {
@@ -25,7 +26,7 @@ const TransactionHistory = () => {
         };
 
         fetchTransactions();
-    }, []);
+    }, [token]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
@@ -64,3 +65,4 @@ const TransactionHistory = () => {
 };
 
 export default TransactionHistory;
+

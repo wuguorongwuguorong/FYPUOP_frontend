@@ -15,6 +15,7 @@ const ShoppingCart = () => {
         isLoading
     } = useCart();
 
+    
     useEffect(() => {
         fetchCart();
     }, []);
@@ -23,60 +24,86 @@ const ShoppingCart = () => {
         console.log("Current cart:", cart);
     }, [cart]);
 
-  const handleCheckout = async () => {
-  try {
-   
-    const orderResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/checkout`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        cart: cart.map(item => ({
-          menu_item_id: item.menu_item_id,
-          menu_item_name: item.menu_item_name,
-          quantity: item.quantity,
-          price: item.price
-        })),
-        customer_id: 2 // Replace with actual customer ID
-      }),
-    });
+    const handleCheckout = async () => {
+        try {
 
-    const rawOrderText = await orderResponse.text();
-    const orderData = JSON.parse(rawOrderText);
+            const orderResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/checkout`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    cart: cart.map(item => ({
+                        menu_item_id: item.menu_item_id,
+                        menu_item_name: item.menu_item_name,
+                        quantity: item.quantity,
+                        price: item.price
+                    })),
+                    customer_id: 2 // Replace with actual customer ID
+                }),
+            });
+            const handleCheckout = async () => {
+                 // Make sure user is logged in and has a valid token
+        if (!user || !user.customer_id) {
+            setError('Customer is not logged in or no valid customer_id found.');
+            return;
+        }
+                const jwt = getJwt();
+                try {
+                    const response = await axios.post(
+                        `${import.meta.env.VITE_API_URL}/api/checkout`,
+                        {},
+                        {
+                            headers: {
+                                Authorization: `Bearer ${jwt}`,
+                            },
+                        }
+                    );
+                    // Redirect to Stripe Checkout
+                    window.location.href = response.data.url;
+                } catch (error) {
+                    console.error("Error during checkout:", error);
+                    alert("Checkout failed. Please try again.");
+                } finally {
 
-    if (!orderResponse.ok || !orderData.order_id) {
-      throw new Error(orderData.error || "Failed to create order");
-    }
+                }
+            };
 
-    console.log(`Order #${orderData.order_id} created`);
+            const rawOrderText = await orderResponse.text();
+            const orderData = JSON.parse(rawOrderText);
 
-    const stripeResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/stripe/create-checkout-session`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        cart: cart.map((item) => ({
-          menu_item_id: item.menu_item_id,
-          menu_item_name: item.menu_item_name,
-          quantity: item.quantity,
-          price: item.price
-        })),
-        customer_id: 2,
-        order_id: orderData.order_id // optional, for metadata
-      }),
-    });
+            if (!orderResponse.ok || !orderData.order_id) {
+                throw new Error(orderData.error || "Failed to create order");
+            }
 
-    const stripeData = await stripeResponse.json();
+            console.log(`Order #${orderData.order_id} created`);
 
-    if (!stripeData.url) {
-      throw new Error("Stripe session failed to create");
-    }
+            const stripeResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/stripe/create-checkout-session`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    cart: cart.map((item) => ({
+                        menu_item_id: item.menu_item_id,
+                        menu_item_name: item.menu_item_name,
+                        quantity: item.quantity,
+                        price: item.price
+                    })),
+                    customer_id: 2,
+                    order_id: orderData.order_id // optional, for metadata
+                }),
+            });
 
-    window.location.href = stripeData.url;
+            const stripeData = await stripeResponse.json();
 
-  } catch (error) {
-    console.error("Checkout error:", error);
-    alert(`Checkout failed: ${error.message}`);
-  }
-};
+            if (!stripeData.url) {
+                throw new Error("Stripe session failed to create");
+            }
+
+            window.location.href = stripeData.url;
+
+        } catch (error) {
+            console.error("Checkout error:", error);
+            alert(`Checkout failed: ${error.message}`);
+        }
+    };
 
     const subtotal = cart.reduce((sum, item) =>
         sum + (Number(item.price || 0) * Number(item.quantity || 1)), 0
@@ -159,7 +186,8 @@ const ShoppingCart = () => {
                             disabled={isLoading || cart.length === 0}
                         >
                             Checkout
-                        </button>
+                        </button> 
+                     
                     </div>
                 </>
             )}

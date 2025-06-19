@@ -28,11 +28,7 @@ function Navbar() {
                 Home
               </Link>
             </li>
-            <li className="nav-item">
-              <Link href="/products" className={`nav-link ${location === '/products' ? 'active' : ''}`}>
-                All Menu
-              </Link>
-            </li>
+  
             <li className="nav-item">
               <Link href="/login" className={`nav-link ${location === '/login' ? 'active' : ''}`}>
                 Members Login

@@ -79,7 +79,7 @@ function HomePage() {
         <div className="container">
           <h1 className="display-4">Welcome to Hungry Panda</h1>
           <p className="lead">Discover authentic Western Cuisine at unbeatable prices!</p>
-          <a href="/products" className="btn btn-light btn-lg">Browse Now</a>
+         
         </div>
       </header>
 
