@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ProductCard from './ProductCard';
 import Navbar from './Navbar';
+
 import HomePage from './HomePage';
 //import ProductPage from './ProductPage';
 import RegisterPage from './RegisterPage';
@@ -16,6 +17,7 @@ function App() {
   return (
     <>
       <Navbar />
+ 
       <Switch>
         <Route path="/" component={Login} />
         <Route path="/homepage" component={HomePage} />

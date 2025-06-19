@@ -37,7 +37,9 @@ function UserLogin() {
             setJwt(response.data.token); // Store the JWT
             actions.setSubmitting(false);
             showMessage('Login successful!', 'success'); // Show success message
-            setLocation('/'); // Redirect to a dashboard or another page
+              setTimeout(() => {
+                setLocation('/homepage'); // Redirect to homepage after login
+            }, 500); // 500ms delay for smoother transition
         } catch (error) {
             console.error('Login failed:', error);
             actions.setErrors({ submit: error.response.data.message });
